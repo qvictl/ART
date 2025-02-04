@@ -271,6 +271,10 @@ if(CTL_FOUND)
     include_directories(${CTL_INCLUDE_DIRS})
 endif()
 
+file(GLOB BASE_UI_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "base/*.cc")
+message(STATUS "UI base sources: ${BASE_UI_SRCS}")
+add_library(ui_base STATIC ${BASE_UI_SRCS})
+
 # Create new executables targets
 add_executable(art ${EXTRA_SRC_NONCLI} ${NONCLISOURCEFILES})
 add_executable(art-cli ${EXTRA_SRC_CLI} ${CLISOURCEFILES})
@@ -294,6 +298,8 @@ set_target_properties(art-cli PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS}" OUTP
 # Add linked libraries dependencies to executables targets
 target_link_libraries(art PUBLIC
     rtengine
+    art_util
+    ui_base
     ${CANBERRA-GTK_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${EXTRA_LIB_RTGUI}
